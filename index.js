@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 8080; // Use port 8080
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // Parse incoming JSON requests
 
 // MongoDB Connection
 const mongoURI = "mongodb://localhost:27017/black-book"; // Ensure this matches your MongoDB setup
@@ -55,6 +55,31 @@ app.get("/drinks", async (req, res) => {
     res.json(drinks); // Return drinks as JSON response
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+// API route to add a new drink
+app.post("/drinks", async (req, res) => {
+  const newDrink = new Drink(req.body); // Create a new drink instance with request body
+  try {
+    const savedDrink = await newDrink.save(); // Save the drink to the database
+    res.status(201).json(savedDrink); // Respond with the saved drink
+  } catch (error) {
+    res.status(400).json({ message: error.message }); // Handle validation errors
+  }
+});
+
+//API route to delete a drink
+app.delete("/drinks/:id", async (req, res) => {
+  const { id } = req.params; // Get the drink ID from the URL parameters
+  try {
+    const deletedDrink = await Drink.findByIdAndDelete(id); // Delete the drink by ID
+    if (!deletedDrink) {
+      return res.status(404).json({ message: "Drink not found" }); // Handle case where drink is not found
+    }
+    res.status(200).json({ message: "Drink deleted successfully" }); // Respond with success message
+  } catch (error) {
+    res.status(500).json({ message: error.message }); // Handle any errors
   }
 });
 
