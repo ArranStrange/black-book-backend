@@ -80,7 +80,7 @@ app.post("/drinks", async (req, res) => {
 });
 
 // Update drink route
-app.put("/drinks/:id", async (req, res) => {
+app.put("/drinks/:_id", async (req, res) => {
   const { id } = req.params; // Extract the ID from the request parameters
   const updateData = req.body; // Get the data from the request body
 
@@ -101,7 +101,7 @@ app.put("/drinks/:id", async (req, res) => {
 });
 
 // API route to delete a drink
-app.delete("/drinks/:id", async (req, res) => {
+app.delete("/drinks/:_id", async (req, res) => {
   const { id } = req.params; // Get the drink ID from the URL parameters
   try {
     console.log(id);
