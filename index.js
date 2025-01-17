@@ -141,7 +141,7 @@ app.post("/register", async (req, res) => {
 });
 
 // User login route with bcrypt for password comparison
-app.post("/user", async (req, res) => {
+app.post("/users", async (req, res) => {
   const { username, password } = req.body;
 
   try {
