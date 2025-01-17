@@ -7,7 +7,11 @@ const app = express();
 const PORT = process.env.PORT || 1000;
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://black-book-backend.onrender.com"],
+  origin: [
+    "http://localhost:3000",
+    "https://black-book-backend.onrender.com",
+    "https://black-book-1454c.web.app",
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
