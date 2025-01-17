@@ -143,16 +143,18 @@ app.post("/users", async (req, res) => {
 // User login route with bcrypt for password comparison
 app.get("/users", async (req, res) => {
   const { username, password } = req.query;
-
+  console.log(username, password);
   try {
     // Find the user by username
     const user = await User.findOne({ username });
+    console.log("This is the user:", user);
     if (!user) {
       return res.status(400).json({ message: "Invalid username or password" });
     }
 
     // Compare the stored hashed password with the input password
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log("Is it a Match", isMatch);
     if (isMatch) {
       // If login is successful, send a success response
       res.status(200).json({ message: "Login successful" });
@@ -160,6 +162,7 @@ app.get("/users", async (req, res) => {
       res.status(400).json({ message: "Invalid username or password" });
     }
   } catch (error) {
+    console.dir(error, { depth: null });
     res.status(500).json({ message: error.message });
   }
 });
