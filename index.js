@@ -2,11 +2,17 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const bcrypt = require("bcrypt"); // Declare it once here
+const bcrypt = require("bcrypt");
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-app.use(cors());
+const corsOptions = {
+  origin: "https://black-book-backend.onrender.com",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 const mongoURI = process.env.MONGO_URI;
