@@ -80,15 +80,17 @@ app.post("/drinks", async (req, res) => {
 });
 
 // Update drink route
-app.put("/drinks/:_id", async (req, res) => {
+app.put("/drinks/:id", async (req, res) => {
   const { id } = req.params; // Extract the ID from the request parameters
+  console.log("this is the ", id);
   const updateData = req.body; // Get the data from the request body
+  console.log("this is the", updateData);
 
   try {
     const updatedDrink = await Drink.findByIdAndUpdate(id, updateData, {
       new: true,
     });
-
+    console.log("The updated drink", updatedDrink);
     if (!updatedDrink) {
       return res.status(404).json({ message: "Drink not found" });
     }
@@ -101,7 +103,7 @@ app.put("/drinks/:_id", async (req, res) => {
 });
 
 // API route to delete a drink
-app.delete("/drinks/:_id", async (req, res) => {
+app.delete("/drinks/:id", async (req, res) => {
   const { id } = req.params; // Get the drink ID from the URL parameters
   try {
     console.log(id);
