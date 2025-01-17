@@ -142,7 +142,7 @@ app.post("/users", async (req, res) => {
 
 // User login route with bcrypt for password comparison
 app.get("/users", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password } = req.query;
 
   try {
     // Find the user by username
