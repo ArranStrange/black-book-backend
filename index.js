@@ -9,8 +9,14 @@ const PORT = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 
-// const mongoURI = "mongodb://localhost:27017/black-book";
 const mongoURI = process.env.MONGO_URI;
+if (!mongoURI) {
+  console.error("MONGO_URI is not defined in the .env file");
+  process.exit(1); // Exit if the MONGO_URI is not found
+}
+
+// const mongoURI = "mongodb://localhost:27017/black-book";
+
 mongoose
   .connect(mongoURI, {
     useNewUrlParser: true,
