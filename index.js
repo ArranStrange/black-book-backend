@@ -24,10 +24,7 @@ if (!mongoURI) {
 // const mongoURI = "mongodb://localhost:27017/black-book";
 
 mongoose
-  .connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(mongoURI, {})
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
