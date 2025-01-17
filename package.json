@@ -1,6 +1,7 @@
 {
   "name": "black-book-backend",
   "version": "1.0.0",
+  "proxy": "https://black-book-backend.onrender.com",
   "description": "",
   "main": "index.js",
   "scripts": {
