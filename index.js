@@ -4,10 +4,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 1000;
 
 const corsOptions = {
-  origin: "https://black-book-backend.onrender.com",
+  origin: ["http://localhost:3000", "https://black-book-backend.onrender.com"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
