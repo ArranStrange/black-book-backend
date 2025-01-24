@@ -91,6 +91,7 @@ app.put("/drinks/:id", async (req, res) => {
   console.log("this is the", updateData);
 
   try {
+    // Use _id to find the drink, not the 'id' field
     const updatedDrink = await Drink.findByIdAndUpdate(id, updateData, {
       new: true,
     });
