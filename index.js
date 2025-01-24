@@ -12,10 +12,10 @@ const corsOptions = {
     "https://black-book-backend.onrender.com",
     "https://black-book-1454c.web.app",
   ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
-
+app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
 app.use(express.json());
 
@@ -33,7 +33,7 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 const drinkSchema = new mongoose.Schema({
-  idDrink: String,
+  idDrink: { type: String, unique: true, required: true },
   drinkName: String,
   Category: String,
   Glass: String,
@@ -72,6 +72,17 @@ app.get("/drinks", async (req, res) => {
   }
 });
 
+app.get("/drinks/:id", (req, res) => {
+  const drinkId = req.params.id;
+  // Query the database for the drink by its ID
+  const drink = drinksDatabase.find((drink) => drink._id === drinkId);
+  if (drink) {
+    res.json(drink);
+  } else {
+    res.status(404).send("Drink not found");
+  }
+});
+
 // API route to add a new drink
 app.post("/drinks", async (req, res) => {
   const newDrink = new Drink(req.body); // Create a new drink instance with request body
@@ -91,7 +102,6 @@ app.put("/drinks/:id", async (req, res) => {
   console.log("this is the", updateData);
 
   try {
-    // Use _id to find the drink, not the 'id' field
     const updatedDrink = await Drink.findByIdAndUpdate(id, updateData, {
       new: true,
     });
