@@ -65,7 +65,7 @@ const User = mongoose.model("User", userSchema);
 // API route to get all drinks
 app.get("/drinks", async (req, res) => {
   try {
-    const drinks = await Drink.find(); // Fetch all drinks
+    const drinks = await Drink.find().sort({ drinkName: 1 }); // Fetch all drinks
     res.json(drinks); // Return drinks as JSON response
   } catch (error) {
     res.status(500).json({ message: error.message });
