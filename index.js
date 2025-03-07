@@ -35,6 +35,7 @@ mongoose
 const drinkSchema = new mongoose.Schema({
   idDrink: { type: String, unique: true, required: true },
   drinkName: String,
+  shortDescription: String,
   Category: String,
   Glass: String,
   Ice: String,
