@@ -14,8 +14,9 @@ export const register = async (req, res) => {
     }
 
     // Hash password
-    //10 represents the "Salt Rounds", this is how many times the function is run on the password, the more times the more
+    //10 represents the "Salt Rounds", this is how many times the function is run on the password, the more times the more secure
     const hashedPassword = await bcrypt.hash(password, 10);
+    //saves the user from the request
     const newUser = new User({ username, password: hashedPassword });
     const savedUser = await newUser.save();
 
@@ -27,7 +28,7 @@ export const register = async (req, res) => {
 
 // User login
 export const login = async (req, res) => {
-  const { username, password } = req.query;
+  const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
     if (!user) {
