@@ -10,7 +10,9 @@ export const register = async (req, res) => {
     // Check if username exists
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.json({ status: "error", message: "Username already taken" });
+      return res
+        .status(400)
+        .json({ status: "error", message: "Username already taken" });
     }
 
     // Hash password
@@ -20,28 +22,30 @@ export const register = async (req, res) => {
     const newUser = new User({ username, password: hashedPassword });
 
     const savedUser = await newUser.save();
-    res.json({ message: "User registered successfully", user: savedUser });
+    res
+      .status(201)
+      .json({ message: "User registered successfully", user: savedUser });
   } catch (error) {
-    res.json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
 // User login
 export const login = async (req, res) => {
-  const { username, password } = req.query;
+  const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
     if (!user) {
-      return res.json({ message: "Invalid username or password" });
+      return res.status(401).json({ message: "Invalid username or password" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
-      res.json({ message: "Login successful" });
+      res.status(200).json({ message: "Login successful" });
     } else {
-      res.json({ message: "Invalid username or password" });
+      res.status(401).json({ message: "Invalid username or password" });
     }
   } catch (error) {
-    res.json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
