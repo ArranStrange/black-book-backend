@@ -4,6 +4,6 @@ import express from "express";
 const authRouter = express.Router();
 
 authRouter.post("/users", register);
-authRouter.post("/users", login);
+authRouter.post("/login", login);
 
 export default authRouter;
