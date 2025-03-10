@@ -1,5 +1,3 @@
-//This file initializes the database, connecting to mongoDB via URL defined in the .env file
-
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
