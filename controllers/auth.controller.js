@@ -28,9 +28,17 @@ export const register = async (req, res) => {
 
 // User login
 export const login = async (req, res) => {
+  console.log("Received login request:", req.body); // Debugging
+
   const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.json({ message: "Invalid username or password" });
+  }
+
   try {
     const user = await User.findOne({ username });
+
     if (!user) {
       return res.json({ message: "Invalid username or password" });
     }
