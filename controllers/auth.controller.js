@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 import User from "../models/auth.model.js";
+import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "dotenv";
 
 // User registration
 export const register = async (req, res) => {
@@ -30,22 +32,34 @@ export const register = async (req, res) => {
   }
 };
 
-// User login
-export const login = async (req, res) => {
+// User login route
+app.post("/auth/users", async (req, res) => {
+  console.log("Received login request with body:", req.body); // Debugging log
   const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ message: "Username and password are required" });
+  }
+
   try {
     const user = await User.findOne({ username });
-    if (!user) {
+    if (!user)
       return res.status(401).json({ message: "Invalid username or password" });
-    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (isMatch) {
-      res.status(200).json({ message: "Login successful" });
-    } else {
-      res.status(401).json({ message: "Invalid username or password" });
-    }
+    if (!isMatch)
+      return res.status(401).json({ message: "Invalid username or password" });
+
+    const token = jwt.sign(
+      { id: user._id, username: user.username },
+      JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+});
