@@ -32,6 +32,12 @@ export const register = async (req, res) => {
   }
 };
 
+import express from "express";
+const app = express();
+
+app.use(express.json()); // ✅ Required to parse JSON request bodies
+app.use(express.urlencoded({ extended: true })); // ✅ Enables URL-encoded parsing
+
 // User login route
 app.post("/auth/users", async (req, res) => {
   console.log("Received login request with body:", req.body); // Debugging log
@@ -54,7 +60,7 @@ app.post("/auth/users", async (req, res) => {
 
     const token = jwt.sign(
       { id: user._id, username: user.username },
-      JWT_SECRET,
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
