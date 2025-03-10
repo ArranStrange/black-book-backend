@@ -13,6 +13,7 @@ const corsOptions = {
     "http://localhost:3000",
     "https://black-book-backend.onrender.com",
     "https://black-book-1454c.web.app",
+    "192.168.0.4:3000",
   ],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],

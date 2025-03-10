@@ -1,27 +1,28 @@
 import bcrypt from "bcrypt";
-import User from "../models/auth.model.js"; // Ensure default export in model
+import User from "../models/auth.model.js";
 
 // User registration
 export const register = async (req, res) => {
+  //requires a username and a password from teh request body (from the frontend form)
   const { username, password } = req.body;
 
   try {
     // Check if username exists
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ message: "Username already taken" });
+      return res.json({ status: "error", message: "Username already taken" });
     }
 
     // Hash password
+    //10 represents the "Salt Rounds", this is how many times the function is run on the password, the more times the more secure
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, password: hashedPassword });
-    const savedUser = await newUser.save();
 
-    res
-      .status(201)
-      .json({ message: "User registered successfully", user: savedUser });
+    const newUser = new User({ username, password: hashedPassword });
+
+    const savedUser = await newUser.save();
+    res.json({ message: "User registered successfully", user: savedUser });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.json({ message: error.message });
   }
 };
 
@@ -31,16 +32,16 @@ export const login = async (req, res) => {
   try {
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(400).json({ message: "Invalid username or password" });
+      return res.json({ message: "Invalid username or password" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
-      res.status(200).json({ message: "Login successful" });
+      res.json({ message: "Login successful" });
     } else {
-      res.status(400).json({ message: "Invalid username or password" });
+      res.json({ message: "Invalid username or password" });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.json({ message: error.message });
   }
 };
