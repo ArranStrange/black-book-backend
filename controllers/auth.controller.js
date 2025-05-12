@@ -8,7 +8,7 @@ import User from "../models/auth.model.js";
 //
 //
 export const register = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, firstName, email } = req.body;
 
   try {
     const existingUser = await User.findOne({ username });
@@ -18,7 +18,12 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({ username, password: hashedPassword });
+    const newUser = new User({
+      username,
+      password: hashedPassword,
+      firstName,
+      email,
+    });
 
     const savedUser = await newUser.save();
 
