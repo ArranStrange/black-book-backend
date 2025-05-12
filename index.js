@@ -6,17 +6,18 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import authRouter from "./routes/auth.routes.js";
 import drinksRouter from "./routes/drinks.routes.js";
+import { isDev } from "./config/constants.js";
 
 const app = express();
 const PORT = process.env.PORT || 1000;
 
 const corsOptions = {
-  origin: [
-    "http://localhost:3000",
-    "https://black-book-backend.onrender.com",
-    "https://black-book-1454c.web.app",
-    "http://192.168.0.4:3000",
-  ],
+  origin: isDev
+    ? ["http://localhost:3000", "http://192.168.0.4:3000"]
+    : [
+        "https://black-book-backend.onrender.com",
+        "https://black-book-1454c.web.app",
+      ],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
